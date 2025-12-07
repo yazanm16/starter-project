@@ -1,21 +1,27 @@
 <?php
 
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubscribersController;
 use App\Http\Controllers\ThemeController;
 use Illuminate\Support\Facades\Route;
 
-
+require __DIR__.'/auth.php';
 Route::controller(ThemeController::class)->name('theme.')->group(function () { 
     Route::get('/','index')->name('index');
     Route::get('/category','category')->name('category');
     Route::get('/contact','contact')->name('contact');
     Route::get('/single-log','singleBlog')->name('singleBlog');
-    Route::get('/login','login')->name('login');
-    Route::get('/register','register')->name('register');
-
 });
 
+Route::post('/subscriber',[SubscribersController::class,'store'])->name('subscriber.store');
 
+Route::post('/contact/message',[ContactController::class,'message'])->name('contact.message');
+
+Route::resource('blogs', BlogController::class)
+->middlewareFor(['create','store'],'auth');
+// Route::resource('blogs', BlogController::class);
 
 
 Route::get('/dashboard', function () {
@@ -28,5 +34,5 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+
 

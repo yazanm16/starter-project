@@ -1,3 +1,9 @@
+@php
+    use App\Models\Category;
+    $headersCategories = Category::get();
+@endphp
+
+
 <!--================Header Menu Area =================-->
 <header class="header_area">
     <div class="main_menu">
@@ -20,32 +26,46 @@
                         <li class="nav-item @yield('categories-active') submenu dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
                                 aria-haspopup="true" aria-expanded="false">Categories</a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" href="{{ route('theme.category') }}">Food</a>
-                                </li>
-                                <li class="nav-item"><a class="nav-link"
-                                        href="{{ route('theme.category') }}">Bussiness</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{{ route('theme.category') }}">Travel</a>
-                                </li>
-                            </ul>
+                            @if (count($headersCategories) > 0)
+                                <ul class="dropdown-menu">
+                                    @foreach ($headersCategories as $category)
+                                        <li class="nav-item"><a class="nav-link"
+                                                href="{{ route('theme.category') }}">{{ $category->name }}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
                         </li>
                         <li class="nav-item @yield('contact-active')"><a class="nav-link"
                                 href="{{ route('theme.contact') }}">Contact</a></li>
                     </ul>
 
                     <!-- Add new blog -->
-                    <a href="#" class="btn btn-sm btn-primary mr-2">Add New</a>
+                    @if (Auth::check())
+                        <a href="{{ route('blogs.create') }}" class="btn btn-sm btn-primary mr-2">Add New</a>
+                    @endif
                     <!-- End - Add new blog -->
 
                     <ul class="nav navbar-nav navbar-right navbar-social">
-                        <a href="#" class="btn btn-sm btn-warning">Register / Login</a>
-                        <!-- <li class="nav-item submenu dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                  aria-expanded="false">Welcome User</a>
-                <ul class="dropdown-menu">
-                  <li class="nav-item"><a class="nav-link" href="blog-details.html">My Blogs</a></li>
-                </ul>
-              </li> -->
+                        @if (!Auth::check())
+                            <a href="{{ route('register') }}" class="btn btn-sm btn-warning">Register / Login</a>
+                        @else
+                            <li class="nav-item submenu dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                                    aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }}</a>
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item"><a class="nav-link" href="blog-details.html">My Blogs</a></li>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('logout') }}"
+                                                onclick="event.preventDefault(); this.closest('form').submit();">
+                                                Logout
+                                            </a>
+                                        </li>
+                                </ul>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </div>

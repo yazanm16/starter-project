@@ -2,30 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog;
 use Illuminate\Http\Request;
 
 class ThemeController extends Controller
 {
-    function index()
+     public function index()
     {
-        return view('theme.index');
+        $blogs = Blog::paginate(4);
+        return view('theme.index', compact('blogs'));
     }
-    function contact(){
+    public function contact(){
         return view('theme.contact');
     }
-    function category(){
+    public function category(){
         return view('theme.category');
     }
 
-    function singleBlog()
+    public function singleBlog()
     {
         return view('theme.single-blog');
     }
-    function login(){
-        return view('theme.login');
-    }
-    function register(){
-        return view('theme.register');
-    }
+   
 
 }
