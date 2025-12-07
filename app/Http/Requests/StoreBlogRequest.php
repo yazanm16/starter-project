@@ -9,10 +9,10 @@ class StoreBlogRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    // public function authorize(): bool
-    // {
-    //     return true;
-    // }
+    public function authorize(): bool
+    {
+        return true;
+    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -23,7 +23,7 @@ class StoreBlogRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'image'=> 'requires|mimes:jpg,png',
+            'image'=> 'required|mimes:jpg,png,jpeg',
             'category_id'=> 'required|exists:categories,id',
             'description' => 'required'
         ];

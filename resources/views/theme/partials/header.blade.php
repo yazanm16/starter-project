@@ -55,14 +55,15 @@
                                     aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }}</a>
                                 <ul class="dropdown-menu">
                                     <li class="nav-item"><a class="nav-link" href="blog-details.html">My Blogs</a></li>
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <li class="nav-item">
+                                    <li class="nav-item">
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
                                             <a class="nav-link" href="{{ route('logout') }}"
                                                 onclick="event.preventDefault(); this.closest('form').submit();">
                                                 Logout
                                             </a>
-                                        </li>
+                                        </form>
+                                    </li>
                                 </ul>
                             </li>
                         @endif
